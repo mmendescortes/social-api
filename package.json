@@ -25,6 +25,7 @@
     "mysql": "",
     "express": "",
     "body-parser": "",
-    "dotenv": ""
+    "dotenv": "",
+    "jsonwebtoken": ""
   }
 }

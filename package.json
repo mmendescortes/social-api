@@ -1,0 +1,30 @@
+{
+  "name": "social-api",
+  "version": "0.0.1",
+  "description": "Social Network System",
+  "main": "api.js",
+  "scripts": {
+    "test": "node api.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmendescortes/social-api.git"
+  },
+  "keywords": [
+    "social",
+    "network",
+    "api"
+  ],
+  "author": "Mateus M. Côrtes",
+  "bugs": {
+    "url": "https://github.com/mmendescortes/social-api/issues"
+  },
+  "homepage": "https://github.com/mmendescortes/social-api#readme",
+  "dependencies": {
+    "bcrypt": "",
+    "mysql": "",
+    "express": "",
+    "body-parser": "",
+    "dotenv": ""
+  }
+}

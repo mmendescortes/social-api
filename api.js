@@ -6,6 +6,7 @@ api.use(body.json());
 api.use(body.urlencoded({extended: true}));
 api.use(require('./view/auth/router'));
 api.use(require('./view/user/router'));
+api.use(require('./view/post/router'));
 api = api.listen(8000, function () {
   var host = api.address().address;
   var port = api.address().port;

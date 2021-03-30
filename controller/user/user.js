@@ -10,7 +10,7 @@ module.exports = class user {
 					res.json({
 						"errorCode": 500,
 						"errorMessage": "There is no such ID!",
-						"errorSolution": process.env.SUPPORT_DOMAIN + "no-such-id-while-changing-email"
+						"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-id-while-changing-email"
 					});
 			} else {
 				changeEmail(id, req.body.email).then((r)=>{

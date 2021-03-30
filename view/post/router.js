@@ -1,60 +1,63 @@
 var express = require('express');
 var user = require("../../controller/user/user");
+var post = require("../../controller/post/post");
 var router = express.Router();
-router.get('/user/:id/password', function(req, res) {
+router.get('/user/:id/post/:post', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
 		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "PUT"
+		"supportedMethods": "DELETE"
 	});
 });
-router.post('/user/:id/password', function(req, res) {
+router.put('/user/:id/post/:post', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
 		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "PUT"
+		"supportedMethods": "DELETE"
 	});
 });
-router.delete('/user/:id/password', function(req, res) {
+router.post('/user/:id/post/:post', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
 		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "PUT"
+		"supportedMethods": "DELETE"
 	});
 });
-router.put('/user/:id/password', function(req, res) {
+router.delete('/user/:id/post/:post', function(req, res) {
 	let userInstance = new user(req.params.id);
-	userInstance.changePassword(req, res);
+	let postInstance = new post(userInstance);
+	postInstance.deletePost(req, res);
 });
-router.get('/user/:id/email', function(req, res) {
+router.get('/user/:id/post', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
 		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "PUT"
+		"supportedMethods": "POST"
 	});
 });
-router.post('/user/:id/email', function(req, res) {
+router.put('/user/:id/post', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
 		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "PUT"
+		"supportedMethods": "POST"
 	});
 });
-router.delete('/user/:id/email', function(req, res) {
+router.put('/user/:id/post', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
 		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "PUT"
+		"supportedMethods": "POST"
 	});
 });
-router.put('/user/:id/email', function(req, res) {
+router.post('/user/:id/post', function(req, res) {
 	let userInstance = new user(req.params.id);
-	userInstance.changeEmail(req, res);
+	let postInstance = new post(userInstance);
+	postInstance.createPost(req, res);
 });
 module.exports = router;

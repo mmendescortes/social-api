@@ -26,6 +26,7 @@
     "express": "",
     "body-parser": "",
     "dotenv": "",
-    "jsonwebtoken": ""
+    "jsonwebtoken": "",
+    "mongodb": ""
   }
 }

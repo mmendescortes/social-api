@@ -27,6 +27,8 @@
     "body-parser": "",
     "dotenv": "",
     "jsonwebtoken": "",
-    "mongodb": ""
+    "mongodb": "",
+	"multer": "",
+	"uuid": ""
   }
 }

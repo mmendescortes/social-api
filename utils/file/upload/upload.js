@@ -17,10 +17,11 @@ module.exports = class upload {
         })
         this.filter = function(req, file, callback) {
             let fileExtension = file.originalname.match(/\.[0-9A-z]+$/g)[0];
-            if (!fileExtension.match(allowedExtensions)) {
-                return callback(new Error('File type not allowed!'))
+            if (!allowedExtensions.includes(fileExtension)) {
+                req.fileValidationError = true;
+                return callback(null, false, req.fileValidationError);
             }
-            callback(null, true)
+            callback(null, true);
         }
         this.limits = {
             fileSize: 1048576 * maxFileSize
@@ -29,7 +30,7 @@ module.exports = class upload {
     action(name = "file", quantity = 200) {
         return this.upload({
             storage: this.storage,
-            filter: this.filter,
+            fileFilter: this.filter,
             limits: this.limits
         }).array(name, quantity)
     }

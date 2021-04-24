@@ -14,7 +14,7 @@ module.exports = class post {
 						"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-id-while-creating-post"
 					});
 			} else {
-				createPost(id.user_id, req.body.content, req.files.map((n)=>{return n.path})).then((r)=>{
+				createPost(id.user_id, req.body.content, req.files.map(n=>n.path)).then((r)=>{
 					if(r[0]){
 						res.status(201);
 						res.json({

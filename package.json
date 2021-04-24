@@ -28,7 +28,7 @@
     "dotenv": "",
     "jsonwebtoken": "",
     "mongodb": "",
-	"multer": "",
-	"uuid": ""
+    "multer": "",
+    "uuid": ""
   }
 }

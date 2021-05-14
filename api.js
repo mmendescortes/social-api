@@ -1,9 +1,12 @@
-require('dotenv').config()
-let body = require('body-parser');
-let express = require('express');
-let api = express();
+require('dotenv').config();
+const cors = require('cors');
+const body = require('body-parser');
+const express = require('express');
+const api = express();
+api.use(cors());
 api.use(body.json());
 api.use(body.urlencoded({extended: true}));
+api.options('*', cors());
 api.use(require('./view/auth/router'));
 api.use(require('./view/user/router'));
 api.use(require('./view/post/router'));

@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt")
-module.exports = class sql4me {
+module.exports = class sql4auth {
     constructor(engine, init = true) {
         // PRIVATE
         this.field = {};
@@ -53,7 +53,7 @@ module.exports = class sql4me {
 
     signup(username, password, email) {
         return new Promise((res) => {
-            this.database.select("SELECT " + this.field.id + " FROM " + this.field.table + " WHERE " + this.field.username + " = ? OR " + this.field.email + " = ?;", [username, username]).then((result) => {
+            this.database.select("SELECT " + this.field.id + " FROM " + this.field.table + " WHERE " + this.field.username + " = ? OR " + this.field.email + " = ?;", [username, email]).then((result) => {
                 if (!result[0]) {
                     this.database.insert("INSERT INTO " + this.field.table + " (" + this.field.username + ", " + this.field.email + ", " + this.field.password + ") VALUES (?, ?, ?);", [username, email, bcrypt.hashSync(password, this.bcrypt)]).then((result) => {
                         result ? res([true, "Account created successfully!"]) : res([false, "There was an error trying to create your account."]);

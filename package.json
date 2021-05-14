@@ -29,6 +29,7 @@
     "jsonwebtoken": "",
     "mongodb": "",
     "multer": "",
-    "uuid": ""
+    "uuid": "",
+    "cors": ""
   }
 }

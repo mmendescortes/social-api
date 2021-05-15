@@ -1,10 +1,11 @@
+const jwt = require('jsonwebtoken');
 module.exports = class user {
 	constructor(id){
 		this.id = id;
 	}
 	changeEmail(req, res){
 		let changeEmail = require("./functions/change-email");
-		jwt.verify(this.id, process.env.JWT_USER_SECRET, function(err, id) {
+		jwt.verify(this.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(500);
 					res.json({
@@ -13,8 +14,8 @@ module.exports = class user {
 						"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-id-while-changing-email"
 					});
 			} else {
-				changeEmail(id, req.body.email).then((r)=>{
-					res.status(200);
+				changeEmail(user.user_id, req.body.email).then((r)=>{
+					status: r[0] ? res.status(200) : res.status(500);
 					res.json({
 						status: r[0],
 						message: r[1]
@@ -25,7 +26,7 @@ module.exports = class user {
 	}
 	changePassword(req, res){
 		let changePassword = require("./functions/change-password");
-		jwt.verify(this.id, process.env.JWT_USER_SECRET, function(err, id) {
+		jwt.verify(this.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(500);
 					res.json({
@@ -34,8 +35,8 @@ module.exports = class user {
 						"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-id-while-changing-password"
 					});
 			} else {
-				changePassword(id, req.body.password).then((r)=>{
-					res.status(200);
+				changePassword(user.user_id, req.body.password).then((r)=>{
+					status: r[0] ? res.status(200) : res.status(500);
 					res.json({
 						status: r[0],
 						message: r[1]

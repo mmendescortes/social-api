@@ -2,7 +2,6 @@ const express = require('express');
 const user = require("../../controller/user/user");
 const post = require("../../controller/post/post");
 const utilsFileUpload = require('../../utils/file/upload/upload');
-const fileUpload = new utilsFileUpload("user_data", [".png", ".jpeg", ".jpg"], 200);
 var router = express.Router();
 router.get('/user/:id/post/:post', function(req, res) {
 	let userInstance = new user(req.params.id);
@@ -18,10 +17,32 @@ router.post('/user/:id/post/:post', function(req, res) {
 	});
 });
 router.put('/user/:id/post/:post', function(req, res) {
-	let userInstance = new user(req.params.id);
-	/* here the post is actually a post token */
-	let postInstance = new post(req.params.post);
-	postInstance.updatePost(req, res, userInstance);
+	let fileUpload = new utilsFileUpload("user_data", [".png", ".jpeg", ".jpg"], 200);
+	let upload = fileUpload.action("media");
+	upload(req, res, (err) => {
+	    if (err) {
+			res.status(400);
+			res.json({
+				"errorCode": 400,
+				"errorMessage": "Lacking file field!",
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-file-field-while-creating-post"
+			});
+	    } else {
+			if(req.fileValidationError) {
+				res.status(400);
+				res.json({
+					"errorCode": 400,
+					"errorMessage": "Unsuported file type!",
+					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-creating-post"
+				});
+			} else {
+				let userInstance = new user(req.params.id);
+				/* here the post is actually a post token */
+				let postInstance = new post(req.params.post);
+				postInstance.updatePost(req, res, userInstance);
+			}
+	    }
+	});
 });
 router.delete('/user/:id/post/:post', function(req, res) {
 	let userInstance = new user(req.params.id);
@@ -53,19 +74,32 @@ router.delete('/user/:id/post', function(req, res) {
 		"supportedMethods": "POST"
 	});
 });
-router.post('/user/:id/post', fileUpload.action(), function(req, res) {
-	if(req.fileValidationError) {
-		res.status(400);
-		res.json({
-			"errorCode": 400,
-			"errorMessage": "Unsuported file type!",
-			"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-creating-post"
-		});
-	} else {
-		let userInstance = new user(req.params.id);
-		let postInstance = new post();
-		postInstance.createPost(req, res, userInstance);
-	}
+router.post('/user/:id/post', function(req, res) {
+	let fileUpload = new utilsFileUpload("user_data", [".png", ".jpeg", ".jpg"], 200);
+	let upload = fileUpload.action("media");
+	upload(req, res, (err) => {
+	    if (err) {
+			res.status(400);
+			res.json({
+				"errorCode": 400,
+				"errorMessage": "Lacking file field!",
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-file-field-while-creating-post"
+			});
+	    } else {
+			if(req.fileValidationError) {
+				res.status(400);
+				res.json({
+					"errorCode": 400,
+					"errorMessage": "Unsuported file type!",
+					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-creating-post"
+				});
+			} else {
+				let userInstance = new user(req.params.id);
+				let postInstance = new post();
+				postInstance.createPost(req, res, userInstance);
+			}
+	    }
+	});
 });
 router.get('/post/:id', function(req, res) {
 	let postInstance = new post(req.params.id);

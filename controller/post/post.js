@@ -34,6 +34,7 @@ module.exports = class post {
 	}
 	updatePost(req, res, user){
 		let updatePost = require("./functions/update-post");
+		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(400);
@@ -43,7 +44,7 @@ module.exports = class post {
 					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-user-id-while-updating-post"
 				});
 			} else {
-				jwt.verify(this.id, process.env.JWT_POST_SECRET, function(err, post) {
+				jwt.verify(id, process.env.JWT_POST_SECRET, function(err, post) {
 					if(err) {
 						res.status(400);
 						res.json({
@@ -74,6 +75,7 @@ module.exports = class post {
 	}
 	deletePost(req, res, user){
 		let deletePost = require("./functions/delete-post");
+		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(400);
@@ -83,7 +85,7 @@ module.exports = class post {
 					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-user-id-while-deleting-post"
 				});
 			} else {
-				jwt.verify(this.id, process.env.JWT_POST_SECRET, function(err, post) {
+				jwt.verify(id, process.env.JWT_POST_SECRET, function(err, post) {
 					if(err) {
 						res.status(400);
 						res.json({
@@ -140,7 +142,7 @@ module.exports = class post {
 					res.status(200);
 					res.json({
 						status: true,
-						message: r[0]
+						message: r
 					});
 				});
 			} else {
@@ -154,6 +156,7 @@ module.exports = class post {
 	}
 	getPostToken(req, res, user){
 		let getPost = require("./functions/get-post");
+		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(400);
@@ -163,13 +166,13 @@ module.exports = class post {
 					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-user-id-while-requesting-post-token"
 				});
 			} else {
-				deletePost(user.user_id, this.id).then((r)=>{
+				getPost(id).then((r)=>{
 					if(r[0]){
 						r[1].then((r) => {
 							res.status(200);
 							res.json({
 								status: true,
-								message: jwt.sign({post_id: r[1]}, process.env.JWT_POST_SECRET, {expiresIn: 120000})
+								message: jwt.sign({post_id: r[0]._id}, process.env.JWT_POST_SECRET, {expiresIn: 120000})
 							});
 						});
 					} else {

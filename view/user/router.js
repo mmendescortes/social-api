@@ -26,8 +26,17 @@ router.delete('/user/:id/password', function(req, res) {
 	});
 });
 router.put('/user/:id/password', function(req, res) {
-	let userInstance = new user(req.params.id);
-	userInstance.changePassword(req, res);
+	if(!req.body.password) {
+		res.status(400);
+		res.json({
+			"errorCode": 400,
+			"errorMessage": `Lacking needed password parameter!`,
+			"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-password-parameter-while-trying-to-change-password"
+		});
+	} else {
+		let userInstance = new user(req.params.id);
+		userInstance.changePassword(req, res);
+	}
 });
 router.get('/user/:id/email', function(req, res) {
 	res.status(405);
@@ -54,7 +63,16 @@ router.delete('/user/:id/email', function(req, res) {
 	});
 });
 router.put('/user/:id/email', function(req, res) {
-	let userInstance = new user(req.params.id);
-	userInstance.changeEmail(req, res);
+	if(!req.body.email) {
+		res.status(400);
+		res.json({
+			"errorCode": 400,
+			"errorMessage": `Lacking needed email parameter!`,
+			"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-email-parameter-while-trying-to-change-email"
+		});
+	} else {
+		let userInstance = new user(req.params.id);
+		userInstance.changeEmail(req, res);
+	}
 });
 module.exports = router;

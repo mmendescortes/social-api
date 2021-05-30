@@ -20,12 +20,19 @@ router.put('/user/:id/post/:post', function(req, res) {
 	let fileUpload = new utilsFileUpload("user_data", [".png", ".jpeg", ".jpg"], 200);
 	let upload = fileUpload.action("media");
 	upload(req, res, (err) => {
-	    if (err) {
+	    if (!req.get("Content-Type").toLowerCase().includes("multipart/form-data")) {
 			res.status(400);
 			res.json({
 				"errorCode": 400,
-				"errorMessage": "Lacking file field!",
-				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-file-field-while-creating-post"
+				"errorMessage": "Request's Content-Type should be multipart/form-data!",
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "request-content-type-should-be-multipart-form-data-error-while-trying-to-update-post"
+			});
+	    } else if (!req.body.content) {
+			res.status(400);
+			res.json({
+				"errorCode": 400,
+				"errorMessage": `Lacking needed content parameter!`,
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-content-parameter-while-trying-to-update-post"
 			});
 	    } else {
 			if(req.fileValidationError) {
@@ -33,7 +40,7 @@ router.put('/user/:id/post/:post', function(req, res) {
 				res.json({
 					"errorCode": 400,
 					"errorMessage": "Unsuported file type!",
-					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-creating-post"
+					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-trying-to-update-post"
 				});
 			} else {
 				let userInstance = new user(req.params.id);
@@ -78,12 +85,19 @@ router.post('/user/:id/post', function(req, res) {
 	let fileUpload = new utilsFileUpload("user_data", [".png", ".jpeg", ".jpg"], 200);
 	let upload = fileUpload.action("media");
 	upload(req, res, (err) => {
-	    if (err) {
+	    if (!req.get("Content-Type").toLowerCase().includes("multipart/form-data")) {
 			res.status(400);
 			res.json({
 				"errorCode": 400,
-				"errorMessage": "Lacking file field!",
-				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-file-field-while-creating-post"
+				"errorMessage": "Request's Content-Type should be multipart/form-data!",
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "request-content-type-should-be-multipart-form-data-error-while-trying-to-create-post"
+			});
+	    } else if (!req.body.content) {
+			res.status(400);
+			res.json({
+				"errorCode": 400,
+				"errorMessage": `Lacking needed content parameter!`,
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-content-parameter-while-trying-to-create-post"
 			});
 	    } else {
 			if(req.fileValidationError) {
@@ -91,10 +105,11 @@ router.post('/user/:id/post', function(req, res) {
 				res.json({
 					"errorCode": 400,
 					"errorMessage": "Unsuported file type!",
-					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-creating-post"
+					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-trying-to-create-post"
 				});
 			} else {
 				let userInstance = new user(req.params.id);
+				/* here the post is actually a post token */
 				let postInstance = new post();
 				postInstance.createPost(req, res, userInstance);
 			}

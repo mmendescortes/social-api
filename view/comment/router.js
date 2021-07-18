@@ -1,22 +1,14 @@
 const express = require('express');
 const user = require("../../controller/user/user");
-const post = require("../../controller/post/post");
+const comment = require("../../controller/comment/comment");
 const utilsFileUpload = require('../../utils/file/upload/upload');
 var router = express.Router();
-router.get('/user/:id/post/:post', function(req, res) {
+router.get('/user/:id/comment/:comment', function(req, res) {
 	let userInstance = new user(req.params.id);
-	let postInstance = new post(req.params.post);
-	postInstance.getPostToken(req, res, userInstance);
+	let commentInstance = new comment(req.params.comment);
+	commentInstance.getCommentToken(req, res, userInstance);
 });
-router.post('/user/:id/post/:post', function(req, res) {
-	res.status(405);
-	res.json({
-		"errorCode": 405,
-		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "GET PUT DELETE"
-	});
-});
-router.put('/user/:id/post/:post', function(req, res) {
+router.put('/user/:id/comment/:comment', function(req, res) {
 	let fileUpload = new utilsFileUpload("data", [".png", ".jpeg", ".jpg"], 200);
 	let upload = fileUpload.action("media");
 	upload(req, res, (err) => {
@@ -25,14 +17,14 @@ router.put('/user/:id/post/:post', function(req, res) {
 			res.json({
 				"errorCode": 400,
 				"errorMessage": "Request's Content-Type should be multipart/form-data!",
-				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "request-content-type-should-be-multipart-form-data-error-while-trying-to-update-post"
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "request-content-type-should-be-multipart-form-data-error-while-trying-to-update-comment"
 			});
 	    } else if (!req.body.content) {
 			res.status(400);
 			res.json({
 				"errorCode": 400,
 				"errorMessage": `Lacking needed content parameter!`,
-				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-content-parameter-while-trying-to-update-post"
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-content-parameter-while-trying-to-update-comment"
 			});
 	    } else {
 			if(req.fileValidationError) {
@@ -40,48 +32,24 @@ router.put('/user/:id/post/:post', function(req, res) {
 				res.json({
 					"errorCode": 400,
 					"errorMessage": "Unsuported file type!",
-					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-trying-to-update-post"
+					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "unsuported-file-type-while-trying-to-update-comment"
 				});
 			} else {
 				let userInstance = new user(req.params.id);
 				/* here the post is actually a post token */
-				let postInstance = new post(req.params.post);
-				postInstance.updatePost(req, res, userInstance);
+				let commentInstance = new comment(req.params.comment);
+				commentInstance.updateComment(req, res, userInstance);
 			}
 	    }
 	});
 });
-router.delete('/user/:id/post/:post', function(req, res) {
+router.delete('/user/:id/comment/:comment', function(req, res) {
 	let userInstance = new user(req.params.id);
 	/* here the post is actually a post token */
-	let postInstance = new post(req.params.post);
-	postInstance.deletePost(req, res, userInstance);
+	let commentInstance = new comment(req.params.comment);
+	commentInstance.deleteComment(req, res, userInstance);
 });
-router.get('/user/:id/post', function(req, res) {
-	res.status(405);
-	res.json({
-		"errorCode": 405,
-		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "POST"
-	});
-});
-router.put('/user/:id/post', function(req, res) {
-	res.status(405);
-	res.json({
-		"errorCode": 405,
-		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "POST"
-	});
-});
-router.delete('/user/:id/post', function(req, res) {
-	res.status(405);
-	res.json({
-		"errorCode": 405,
-		"errorMessage": "Unsuported method used!",
-		"supportedMethods": "POST"
-	});
-});
-router.post('/user/:id/post', function(req, res) {
+router.post('/user/:id/comment/:object', function(req, res) {
 	let fileUpload = new utilsFileUpload("data", [".png", ".jpeg", ".jpg"], 200);
 	let upload = fileUpload.action("media");
 	upload(req, res, (err) => {
@@ -109,18 +77,17 @@ router.post('/user/:id/post', function(req, res) {
 				});
 			} else {
 				let userInstance = new user(req.params.id);
-				/* here the post is actually a post token */
-				let postInstance = new post();
-				postInstance.createPost(req, res, userInstance);
+				let commentInstance = new comment();
+				commentInstance.createComment(req, res, userInstance);
 			}
 	    }
 	});
 });
-router.get('/post/:id', function(req, res) {
-	let postInstance = new post(req.params.id);
-	postInstance.getPost(req, res);
+router.get('/comment/:id', function(req, res) {
+	let commentInstance = new comment(req.params.id);
+	commentInstance.getComment(req, res);
 });
-router.put('/post/:id', function(req, res) {
+router.put('/comment/:id', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
@@ -128,7 +95,7 @@ router.put('/post/:id', function(req, res) {
 		"supportedMethods": "GET"
 	});
 });
-router.delete('/post/:id', function(req, res) {
+router.delete('/comment/:id', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
@@ -136,7 +103,7 @@ router.delete('/post/:id', function(req, res) {
 		"supportedMethods": "GET"
 	});
 });
-router.post('/post/:id', function(req, res) {
+router.post('/comment/:id', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
@@ -144,11 +111,11 @@ router.post('/post/:id', function(req, res) {
 		"supportedMethods": "GET"
 	});
 });
-router.get('/posts', function(req, res) {
-	let postInstance = new post();
-	postInstance.getPosts(req, res);
+router.get('/comments/:object', function(req, res) {
+	let commentInstance = new comment();
+	commentInstance.getComments(req, res);
 });
-router.put('/posts', function(req, res) {
+router.put('/comments/:object', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
@@ -156,7 +123,7 @@ router.put('/posts', function(req, res) {
 		"supportedMethods": "GET"
 	});
 });
-router.delete('/posts', function(req, res) {
+router.delete('/comments/:object', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
@@ -164,7 +131,7 @@ router.delete('/posts', function(req, res) {
 		"supportedMethods": "GET"
 	});
 });
-router.post('/posts', function(req, res) {
+router.post('/comments/:object', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,

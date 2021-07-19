@@ -4,7 +4,7 @@ module.exports = class comment {
 		this.id = id;
 	}
 	createComment(req, res, user){
-		let createComment = require("./functions/create-comment");
+		let createComment = require("../../model/comment/create-comment");
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(400);
@@ -33,7 +33,7 @@ module.exports = class comment {
 		});
 	}
 	updateComment(req, res, user){
-		let updateComment = require("./functions/update-comment");
+		let updateComment = require("../../model/comment/update-comment");
 		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
@@ -74,7 +74,7 @@ module.exports = class comment {
 		});
 	}
 	deleteComment(req, res, user){
-		let deleteComment = require("./functions/delete-comment");
+		let deleteComment = require("../../model/comment/delete-comment");
 		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
@@ -115,7 +115,7 @@ module.exports = class comment {
 		});
 	}
 	getComment(req, res){
-		let getComment = require("./functions/get-comment");
+		let getComment = require("../../model/comment/get-comment");
 		getComment(this.id).then((r)=>{
 			if(r[0]){
 				r[1].then((r) => {
@@ -135,7 +135,7 @@ module.exports = class comment {
 		});
 	}
 	getComments(req, res){
-		let getComments = require("./functions/get-comments");
+		let getComments = require("../../model/comment/get-comments");
 		getComments(req.params.object).then((r)=>{
 			if(r[0]){
 				r[1].then((r) => {
@@ -155,7 +155,7 @@ module.exports = class comment {
 		});
 	}
 	getCommentToken(req, res, user){
-		let getComment = require("./functions/get-comment");
+		let getComment = require("../../model/comment/get-comment");
 		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {

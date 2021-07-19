@@ -4,7 +4,7 @@ module.exports = class user {
 		this.id = id;
 	}
 	changeEmail(req, res){
-		let changeEmail = require("./functions/change-email");
+		let changeEmail = require("../../model/user/change-email");
 		jwt.verify(this.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(500);
@@ -25,7 +25,7 @@ module.exports = class user {
 		});
 	}
 	changePassword(req, res){
-		let changePassword = require("./functions/change-password");
+		let changePassword = require("../../model/user/change-password");
 		jwt.verify(this.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(500);

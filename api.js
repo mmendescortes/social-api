@@ -7,12 +7,10 @@ api.use(cors());
 api.use(body.json());
 api.use(body.urlencoded({extended: true}));
 api.options('*', cors());
-api.use(require('./view/auth/router'));
-api.use(require('./view/user/router'));
-api.use(require('./view/post/router'));
-api.use(require('./view/comment/router'));
-api.listen(8000, function () {
-  var host = "localhost";
-  var port = "8000";
-  console.log("Example app listening at http://%s:%s", host, port);
+api.use(require('./router/auth/router'));
+api.use(require('./router/user/router'));
+api.use(require('./router/post/router'));
+api.use(require('./router/comment/router'));
+api.listen(process.env.API_PORT, function () {
+  console.log("SocialAPI is listening at http://%s:%s", process.env.API_HOST, process.env.API_PORT);
 });

@@ -4,7 +4,7 @@ module.exports = class post {
 		this.id = id;
 	}
 	createPost(req, res, user){
-		let createPost = require("./functions/create-post");
+		let createPost = require("../../model/post/create-post");
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
 				res.status(400);
@@ -33,7 +33,7 @@ module.exports = class post {
 		});
 	}
 	updatePost(req, res, user){
-		let updatePost = require("./functions/update-post");
+		let updatePost = require("../../model/post/update-post");
 		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
@@ -74,7 +74,7 @@ module.exports = class post {
 		});
 	}
 	deletePost(req, res, user){
-		let deletePost = require("./functions/delete-post");
+		let deletePost = require("../../model/post/delete-post");
 		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {
@@ -115,7 +115,7 @@ module.exports = class post {
 		});
 	}
 	getPost(req, res){
-		let getPost = require("./functions/get-post");
+		let getPost = require("../../model/post/get-post");
 		getPost(this.id).then((r)=>{
 			if(r[0]){
 				r[1].then((r) => {
@@ -135,7 +135,7 @@ module.exports = class post {
 		});
 	}
 	getPosts(req, res){
-		let getPosts = require("./functions/get-posts");
+		let getPosts = require("../../model/post/get-posts");
 		getPosts(req.params.id).then((r)=>{
 			if(r[0]){
 				r[1].then((r) => {
@@ -155,7 +155,7 @@ module.exports = class post {
 		});
 	}
 	getPostToken(req, res, user){
-		let getPost = require("./functions/get-post");
+		let getPost = require("../../model/post/get-post");
 		let id = this.id;
 		jwt.verify(user.id, process.env.JWT_USER_SECRET, function(err, user) {
 			if(err) {

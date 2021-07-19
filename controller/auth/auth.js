@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 module.exports = class auth {
 	signin(req, res){
-		let signin = require("./functions/signin");
+		let signin = require("../../model/auth/signin");
 		signin(req).then((r)=>{
 			if(r[0]) {
 				res.status(200);
@@ -19,7 +19,7 @@ module.exports = class auth {
 		});
 	}
 	signup(req, res){
-		let signup = require("./functions/signup");
+		let signup = require("../../model/auth/signup");
 		signup(req).then((r)=>{
 			r[0] ? res.status(201) : res.status(400);
 			res.json({

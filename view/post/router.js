@@ -20,7 +20,19 @@ router.put('/user/:id/post/:post', function(req, res) {
 	let fileUpload = new utilsFileUpload("data", [".png", ".jpeg", ".jpg"], 200);
 	let upload = fileUpload.action("media");
 	upload(req, res, (err) => {
-	    if (!req.get("Content-Type").toLowerCase().includes("multipart/form-data")) {
+		try {
+			isMultipartFormData = !req.get("Content-Type").toLowerCase().includes("multipart/form-data");
+		} catch(e) {
+			if(e) {
+				res.status(400);
+				res.json({
+					"errorCode": 400,
+					"errorMessage": "Request's Content-Type should be multipart/form-data!",
+					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "request-content-type-should-be-multipart-form-data-error-while-trying-to-create-post"
+				});
+			}
+		}
+ 	    if (isMultipartFormData) {
 			res.status(400);
 			res.json({
 				"errorCode": 400,
@@ -85,7 +97,19 @@ router.post('/user/:id/post', function(req, res) {
 	let fileUpload = new utilsFileUpload("data", [".png", ".jpeg", ".jpg"], 200);
 	let upload = fileUpload.action("media");
 	upload(req, res, (err) => {
-	    if (!req.get("Content-Type").toLowerCase().includes("multipart/form-data")) {
+		try {
+			isMultipartFormData = !req.get("Content-Type").toLowerCase().includes("multipart/form-data");
+		} catch(e) {
+			if(e) {
+				res.status(400);
+				res.json({
+					"errorCode": 400,
+					"errorMessage": "Request's Content-Type should be multipart/form-data!",
+					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "request-content-type-should-be-multipart-form-data-error-while-trying-to-create-post"
+				});
+			}
+		}
+ 	    if (isMultipartFormData) {
 			res.status(400);
 			res.json({
 				"errorCode": 400,

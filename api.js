@@ -10,6 +10,7 @@ api.options('*', cors());
 api.use(require('./view/auth/router'));
 api.use(require('./view/user/router'));
 api.use(require('./view/post/router'));
+api.use(require('./view/comment/router'));
 api.listen(8000, function () {
   var host = "localhost";
   var port = "8000";

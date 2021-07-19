@@ -14,7 +14,7 @@ module.exports = class post {
 					"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-id-while-creating-post"
 				});
 			} else {
-				createPost(user.user_id, req.body.content, req.files.map(n=>n.path)).then((r)=>{
+				createPost(user.user_id, req.body.object, req.body.privacy, req.body.content, req.files.map(n=>n.path)).then((r)=>{
 					if(r[0]){
 						res.status(201);
 						res.json({
@@ -53,7 +53,7 @@ module.exports = class post {
 							"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "no-such-post-id-while-updating-post"
 						});
 					} else {
-						updatePost(user.user_id, post.post_id, req.body.content, req.files.map(n=>n.path)).then((r)=>{
+						updatePost(user.user_id, post.post_id, req.body.privacy, req.body.content, req.files.map(n=>n.path)).then((r)=>{
 							if(r[0]){
 								res.status(201);
 								res.json({
@@ -136,7 +136,7 @@ module.exports = class post {
 	}
 	getPosts(req, res){
 		let getPosts = require("./functions/get-posts");
-		getPosts().then((r)=>{
+		getPosts(req.params.id).then((r)=>{
 			if(r[0]){
 				r[1].then((r) => {
 					res.status(200);

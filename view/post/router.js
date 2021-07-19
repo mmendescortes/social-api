@@ -39,6 +39,13 @@ router.put('/user/:id/post/:post', function(req, res) {
 				"errorMessage": "Request's Content-Type should be multipart/form-data!",
 				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "request-content-type-should-be-multipart-form-data-error-while-trying-to-update-post"
 			});
+	    } else if (!req.body.privacy) {
+			res.status(400);
+			res.json({
+				"errorCode": 400,
+				"errorMessage": `Lacking needed privacy parameter!`,
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-privacy-parameter-while-trying-to-update-post"
+			});
 	    } else if (!req.body.content) {
 			res.status(400);
 			res.json({
@@ -116,7 +123,21 @@ router.post('/user/:id/post', function(req, res) {
 				"errorMessage": "Request's Content-Type should be multipart/form-data!",
 				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "request-content-type-should-be-multipart-form-data-error-while-trying-to-create-post"
 			});
-	    } else if (!req.body.content) {
+	    } else if (!req.body.object) {
+			res.status(400);
+			res.json({
+				"errorCode": 400,
+				"errorMessage": `Lacking needed object parameter!`,
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-object-parameter-while-trying-to-create-post"
+			});
+	    } else if (!req.body.privacy) {
+			res.status(400);
+			res.json({
+				"errorCode": 400,
+				"errorMessage": `Lacking needed privacy parameter!`,
+				"errorSolution": process.env.DEV_SUPPORT_DOMAIN + "lacking-needed-privacy-parameter-while-trying-to-create-post"
+			});
+	    }else if (!req.body.content) {
 			res.status(400);
 			res.json({
 				"errorCode": 400,
@@ -168,11 +189,11 @@ router.post('/post/:id', function(req, res) {
 		"supportedMethods": "GET"
 	});
 });
-router.get('/posts', function(req, res) {
+router.get('/posts/:id', function(req, res) {
 	let postInstance = new post();
 	postInstance.getPosts(req, res);
 });
-router.put('/posts', function(req, res) {
+router.put('/posts/:id', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
@@ -180,7 +201,7 @@ router.put('/posts', function(req, res) {
 		"supportedMethods": "GET"
 	});
 });
-router.delete('/posts', function(req, res) {
+router.delete('/posts/:id', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,
@@ -188,7 +209,7 @@ router.delete('/posts', function(req, res) {
 		"supportedMethods": "GET"
 	});
 });
-router.post('/posts', function(req, res) {
+router.post('/posts/:id', function(req, res) {
 	res.status(405);
 	res.json({
 		"errorCode": 405,

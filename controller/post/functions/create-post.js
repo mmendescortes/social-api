@@ -1,5 +1,5 @@
-module.exports = async (userID, content, media) => {
+module.exports = async (userID, ObjectID, privacy, content, media) => {
 	const mongo4me = require("../../../vendor/mongo4me/mongo4me");
 	const engine = new mongo4me(process.env.MONGO_URI);
-	return engine.insert(process.env.MONGO_DB, process.env.MONGO_POSTS_COLLECTION, [{"owner": userID, "content": content, "media": media}]);
+	return engine.insert(process.env.MONGO_DB, process.env.MONGO_POSTS_COLLECTION, [{"owner": userID, "object": ObjectID, "privacy": privacy, "content": content, "media": media}]);
 };
